@@ -31,29 +31,29 @@ app.get('/hedgie/:keyword', (req, res) => {
   var keyword = req.params.keyword;
 
   function findHedgieImage(keyword) {
-    var nightmare = Nightmare({ show: true });
+    var nightmare = Nightmare({ show: true }); //creates bot
 
     return nightmare
       .goto('https://www.google.com') //goes to google
-      .insert('input[title="Search"]', `hedgehog ${keyword}`) //inserts hedgehog and typed word into search bar
-      .click('input[value="Google Search"]') //searches google for things
-      .wait('a.q.qs') //waits for images tab to appear
-      .click('a.q.qs') //clicks on images tab
-      .wait('div#res.med') //waits for images to appear
+      .insert('input[title="Search"]', `hedgehog ${keyword}`) //bot inserts hedgehog and typed word into search bar
+      .click('input[value="Google Search"]') //bot searches google for things
+      .wait('a.q.qs') //bot waits for images link to appear
+      .click('a.q.qs') //bot clicks on images tab
+      .wait('div#res.med') //bot waits for images to appear
       .evaluate(function() {
         var photoDivs = document.querySelectorAll('img.rg_ic');
-        var list = [].slice.call(photoDivs); //finds images
+        var list = [].slice.call(photoDivs); //bot gathers all image containers into one collection
 
         return list.map(function(div) {
-          return div.src; //returns images
+          return div.src; //bot returns images
         });
       })
       .end()
       .then(function (result) {
-        return result.slice(1, 5);
+        return result.slice(1, 5); //bot collects images 1-4, stops at 5
       })
       .then(function (images) {
-        res.json(images);
+        res.json(images); //bot gives images to user
       })
       .catch(function (error) {
         console.error('Search failed:', error);
@@ -61,7 +61,7 @@ app.get('/hedgie/:keyword', (req, res) => {
   }
 
   findHedgieImage(keyword);
-  var nightmare = Nightmare({show:true}); //shows what bots are doing
+  var nightmare = Nightmare({show:true}); //shows what bot is doing
 
 });
 
